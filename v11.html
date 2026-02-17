@@ -76,21 +76,25 @@
   .view-mode .desc-display:empty{display:none}
   .view-mode .desc-input{display:none}
   .btn-edit{background:#2980b9;box-shadow:0 3px 10px #2980b944;font-size:12px;padding:8px 20px;margin-top:10px}
-  .btn-stay-view{background:#e67e22;box-shadow:0 3px 10px #e67e2244;font-size:14px;padding:10px 28px}
-  .btn-share-view{background:#27ae60;box-shadow:0 3px 10px #27ae6044;font-size:12px;padding:8px 20px;margin-top:6px}
   .view-mode .topbar{display:none}
   .view-mode .divider{display:none}
   .view-mode .controls{display:none}
-  .view-mode .preview{width:100%!important;flex:1;justify-content:center;padding:20px}
+  .view-mode .preview{width:100%!important;flex:1;justify-content:center;padding:20px;padding-bottom:70px}
   .view-mode .scene{width:min(95%,560px);aspect-ratio:16/9}
-  .view-topbar{display:none;align-items:center;justify-content:center;gap:10px;padding:12px;border-bottom:1px solid #1a3050;flex-shrink:0}
-  .view-mode .view-topbar{display:flex}
+  .view-bottombar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;flex-shrink:0}
+  .view-mode .view-bottombar{display:flex}
+  .view-bottombar .btn{flex:1;border-radius:0;font-size:14px;padding:20px 0;letter-spacing:1px}
+  .vb-edit{background:#2980b9}
+  .vb-share{background:#27ae60}
+  .vb-rando{background:#e67e22}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="view-topbar" id="viewTopbar">
-    <button class="btn btn-stay-view" id="btnStayView">🔄 Stay Random</button>
+  <div class="view-bottombar" id="viewBottombar">
+    <button class="btn vb-edit" id="btnEditView">✏️ Edit</button>
+    <button class="btn vb-share" id="btnShareView">🔗 Share</button>
+    <button class="btn vb-rando" id="btnStayView">🔄 Rando</button>
   </div>
   <div class="topbar">
     <span class="title">⚔️ Character Builder</span>
@@ -104,7 +108,6 @@
       <div class="desc-display" id="descDisplay"></div>
       <textarea class="desc-input" id="descInput" rows="1" maxlength="300" placeholder="Add a description..."></textarea>
       <button class="btn btn-edit" id="btnEdit" style="display:none">✏️ Edit Character</button>
-      <button class="btn btn-share-view" id="btnShareView" style="display:none">🔗 Share</button>
     </div>
     <div class="divider" id="divider"></div>
     <div class="controls"><div class="tabs" id="tabBar"></div><div class="options" id="optionsPanel"></div></div>
@@ -1224,19 +1227,17 @@ const loadedFromURL=loadFromURL();
 function enterViewMode(){
   viewMode=true;
   document.getElementById("app").classList.add("view-mode");
-  btnEdit.style.display="";
-  btnShareView.style.display="";
 }
 function enterEditMode(){
   viewMode=false;
   document.getElementById("app").classList.remove("view-mode");
-  btnEdit.style.display="none";
-  btnShareView.style.display="none";
   const url=window.location.origin+window.location.pathname;
   history.replaceState(null,"",url);
   render();
 }
 btnEdit.addEventListener("click",enterEditMode);
+const btnEditView=document.getElementById("btnEditView");
+btnEditView.addEventListener("click",enterEditMode);
 if(viewMode)enterViewMode();
 
 // --- Init ---
